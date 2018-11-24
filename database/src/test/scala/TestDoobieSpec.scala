@@ -16,7 +16,7 @@ class TestDoobieSpec extends FunSpec with Matchers {
   implicit val materializer = ActorMaterializer()
 
   // val f = CommandRunner.read2("a")
-  val f = CommandRunner.search[Patient]("abc")
+  val f = CommandRunner.search[Patient]("c")
     .runWith(Sink.seq)
 
   val r = Await.result(f, 500 millis)

@@ -18,25 +18,22 @@ trait Searchable[A <: Model] {
 object Searchable {
   implicit object PatientSearch extends Searchable[Patient] {
     override def search(term: String, schema: String = "hl7")(implicit xa: Transactor[IO]): IO[List[Patient]] = {
+      
+      // https://tpolecat.github.io/doobie/docs/17-FAQ.html#how-do-i-turn-an-arbitrary-sql-string-into-a-query0update0
+      val stmt = fr"""select * from """ ++ Fragment(schema, None) ++ fr""".patient where name ~* """ ++ Fragment(s"'$term'", None) ++ fr""" limit 10"""
+
       // Testing
       val y = xa.yolo
       import y._
       
-      val stmt = s"""select * from $schema.patient where name ~* '$term' limit 10
-        """
-
-      // https://tpolecat.github.io/doobie-0.2.3/15-FAQ.html
-      val q = Query[String, Patient](stmt, None).toQuery0("")      
-
-      q
+      stmt
+        .query[Patient]
         .check
         .unsafeRunSync
-      /*
-      sql"""select * from $schema.patient where name ~* '$term'
-        """.query[Patient]
-      */
-
-      q
+      // Fin Testing
+      
+      stmt
+        .query[Patient]
         .stream
         .compile
         .to[List]

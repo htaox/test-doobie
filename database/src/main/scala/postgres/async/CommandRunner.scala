@@ -30,29 +30,12 @@ object CommandRunner {
     "org.postgresql.Driver", "jdbc:postgresql:eventstore", "streamer", "streamer"
   )
 
-  // lazy val ctx = new PostgresAsyncContext(SnakeCase, "development.quill.postgres.ctx")
-
-  // import ctx._
-/**
-  def searchQuery[A](search: String) = quote {
-    () => infix"""SELECT name FROM hl7.mt_streams WHERE name *~ '$search'""".as[Query[A]]
-  }
-
-  implicit class ILike(s1: String) {
-    def ilike(s2: String) = quote(infix"$s1 ilike $s2".as[Boolean])
-  }
-
-  def read2(search: String): Future[Seq[MtStreams]] =
-    ctx.run(querySchema[MtStreams]("hl7.mt_streams", _.typeName -> "type").filter(_.typeName ilike lift("%" + search + "%")))
-*/
-
   // : Future[List[A]] 
-  def search[A <: Model](term: String, schema: String = "hl7")(implicit searchable: Searchable[A], typeTag: TypeTag[A]) = {
+  def search[A <: Model](term: String, schema: String = "hl7")(implicit searchable: Searchable[A], typeTag: TypeTag[A]): Source[A, akka.NotUsed] = {
     val t = schema + "." + typeTag.tpe.typeSymbol.name.toString.toLowerCase
 
     val io = searchable.search(term)
 
-    // Source(io.unsafeRunSync())
     Source(io.unsafeRunSync())
   }
 }
