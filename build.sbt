@@ -73,8 +73,12 @@ val doobie = "org.tpolecat" %% "doobie-core"      % "0.6.0"
 val doobieH2 = "org.tpolecat" %% "doobie-h2"        % "0.6.0"          // H2 driver 1.4.197 + type mappings.
 val doobieHikari = "org.tpolecat" %% "doobie-hikari"    % "0.6.0"          // HikariCP transactor.
 val doobiePostgres = "org.tpolecat" %% "doobie-postgres"  % "0.6.0"          // Postgres driver 42.2.5 + type mappings.
+val doobiePostgresCirce = "org.tpolecat" %% "doobie-postgres-circe"  % "0.6.0"          // Postgres driver 42.2.5 + type mappings.
 val doobieSpecs2 = "org.tpolecat" %% "doobie-specs2"    % "0.6.0" % "test" // Specs2 support for typechecking statements.
 val doobieScalaTest = "org.tpolecat" %% "doobie-scalatest" % "0.6.0" % "test"  // ScalaTest support for typechecking statements.
+
+// circe
+val circeGenericExtras = "io.circe" %% "circe-generic-extras" % "0.10.0"
 
 lazy val database = project.
   settings(
@@ -88,7 +92,9 @@ lazy val database = project.
       akkaSlf4j,
       akkaStreamTestkit,
       doobiePostgres,
-      doobieScalaTest      
+      doobiePostgresCirce,
+      doobieScalaTest,
+      circeGenericExtras         
     )
   ).dependsOn(
     common

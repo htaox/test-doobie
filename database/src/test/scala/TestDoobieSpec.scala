@@ -5,7 +5,7 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
 import com.eztier.postgres.async._
-import com.eztier.postgres.eventstore.models.Patient
+import com.eztier.postgres.eventstore.models.{Patient, CaPatient}
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -24,5 +24,12 @@ class TestDoobieSpec extends FunSpec with Matchers {
   r.foreach(println(_))
 
   println("Done")
+
+  val f2 = CommandRunner.search[CaPatient]("a")
+    .runWith(Sink.seq)
+
+  val r2 = Await.result(f2, 500 millis)
+
+  r2.foreach(println(_))
 
 }

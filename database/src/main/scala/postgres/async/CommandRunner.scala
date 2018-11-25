@@ -9,6 +9,7 @@ import scala.concurrent.Future
 // import scala.concurrent.ExecutionContext.Implicits.global
 import scala.reflect.runtime.universe._
 import com.eztier.postgres.eventstore.models._
+import com.eztier.postgres.eventstore.implcits._
 
 import doobie._
 import doobie.implicits._
