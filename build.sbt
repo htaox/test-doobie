@@ -33,7 +33,8 @@ lazy val commonSettings = Seq(
   resolvers ++= Seq(
     Resolver.sonatypeRepo("public"),
     Resolver.sonatypeRepo("releases"),
-    Resolver.sonatypeRepo("snapshots")
+    Resolver.sonatypeRepo("snapshots"),
+    Resolver.bintrayRepo("hseeberger", "maven")
   )
 )
 
@@ -80,6 +81,9 @@ val doobieScalaTest = "org.tpolecat" %% "doobie-scalatest" % "0.6.0" % "test"  /
 // circe
 val circeGenericExtras = "io.circe" %% "circe-generic-extras" % "0.10.0"
 
+// akka-http circe
+val akkaHttpCirce = "de.heikoseeberger" %% "akka-http-circe" % "1.22.0"
+
 lazy val database = project.
   settings(
     name := "database",
@@ -94,7 +98,7 @@ lazy val database = project.
       doobiePostgres,
       doobiePostgresCirce,
       doobieScalaTest,
-      circeGenericExtras         
+      circeGenericExtras    
     )
   ).dependsOn(
     common
@@ -113,6 +117,7 @@ lazy val http = project.
       akkaStreamTestkit,
       akkaHttp,
       akkaHttpCore,
+      akkaHttpCirce,
       akkaHttpSprayJson,
       akkaHttpTestkit
     )
